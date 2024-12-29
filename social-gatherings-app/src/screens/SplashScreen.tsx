@@ -1,10 +1,25 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Animated, Dimensions } from 'react-native';
-import RoveLogo from '../assets/Rove.svg';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import BranchLogo from '../../assets/BranchLogo.svg';
 
 const { width, height } = Dimensions.get('window');
 
-export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
+type RootStackParamList = {
+  Splash: undefined;
+  MainTabs: undefined;
+};
+
+type SplashScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Splash'
+>;
+
+type Props = {
+  navigation: SplashScreenNavigationProp;
+};
+
+export default function SplashScreen({ navigation }: Props) {
   const fadeAnim = new Animated.Value(0);
   const scaleAnim = new Animated.Value(0.8);
 
@@ -24,17 +39,13 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
       }),
     ]).start();
 
-    // Set timeout to finish splash screen
+    // Navigate to main screen after delay
     const timer = setTimeout(() => {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }).start(onFinish);
-    }, 2000);
+      navigation.replace('MainTabs');
+    }, 2500);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -47,7 +58,7 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
           },
         ]}
       >
-        <RoveLogo width={width * 0.6} height={width * 0.6} fill="#FFFFFF" />
+        <BranchLogo width={200} height={200} />
       </Animated.View>
     </View>
   );
@@ -56,12 +67,11 @@ export default function SplashScreen({ onFinish }: { onFinish: () => void }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
-    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   logoContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
   },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 interface ExpertiseBadgeProps {
@@ -36,7 +36,7 @@ const ActivityHistoryItem = ({ title, time }: ActivityHistoryItemProps) => (
   </View>
 );
 
-export default function Profile() {
+export default function Profile({ navigation }) {
   const mockUser = {
     name: 'Evan Anderson',
     location: 'San Francisco, CA',
@@ -59,67 +59,89 @@ export default function Profile() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
-          <Ionicons name="chevron-back" size={24} color="#333" />
-        </TouchableOpacity>
-        <View style={styles.profileInfo}>
-          <Image
-            source={{ uri: 'https://via.placeholder.com/100' }}
-            style={styles.profileImage}
-          />
-          <View style={styles.nameContainer}>
-            <Text style={styles.name}>
-              {mockUser.name}
-              {mockUser.verified && (
-                <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
-              )}
-            </Text>
-            <Text style={styles.location}>{mockUser.location}</Text>
-            <Text style={styles.stats}>
-              {mockUser.stats.friends} Friends · {mockUser.stats.activities} Activities
-            </Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentContainer}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton}>
+            <Ionicons name="chevron-back" size={24} color="#333" />
+          </TouchableOpacity>
+          <View style={styles.profileInfo}>
+            <Image
+              source={{ uri: 'https://via.placeholder.com/100' }}
+              style={styles.profileImage}
+            />
+            <View style={styles.nameContainer}>
+              <Text style={styles.name}>
+                {mockUser.name}
+                {mockUser.verified && (
+                  <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
+                )}
+              </Text>
+              <Text style={styles.location}>{mockUser.location}</Text>
+              <Text style={styles.stats}>
+                {mockUser.stats.friends} Friends · {mockUser.stats.activities} Activities
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Bio</Text>
-        <Text style={styles.bio}>{mockUser.bio}</Text>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Interests</Text>
-        <View style={styles.interestsContainer}>
-          {mockUser.interests.map((interest, index) => (
-            <InterestTag key={index} label={interest} />
-          ))}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Bio</Text>
+          <Text style={styles.bio}>{mockUser.bio}</Text>
         </View>
-      </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Badges of Expertise</Text>
-        <View style={styles.expertiseContainer}>
-          {mockUser.expertise.map((badge, index) => (
-            <ExpertiseBadge key={index} icon={badge.icon} label={badge.label} />
-          ))}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Interests</Text>
+          <View style={styles.interestsContainer}>
+            {mockUser.interests.map((interest, index) => (
+              <InterestTag key={index} label={interest} />
+            ))}
+          </View>
         </View>
-      </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Past Activities</Text>
-        <View style={styles.historyContainer}>
-          {mockUser.recentActivities.map((activity, index) => (
-            <ActivityHistoryItem
-              key={index}
-              title={activity.title}
-              time={activity.time}
-            />
-          ))}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Badges of Expertise</Text>
+          <View style={styles.expertiseContainer}>
+            {mockUser.expertise.map((badge, index) => (
+              <ExpertiseBadge key={index} icon={badge.icon} label={badge.label} />
+            ))}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Past Activities</Text>
+          <View style={styles.historyContainer}>
+            {mockUser.recentActivities.map((activity, index) => (
+              <ActivityHistoryItem
+                key={index}
+                title={activity.title}
+                time={activity.time}
+              />
+            ))}
+          </View>
+        </View>
+
+        <View style={styles.menuSection}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Preferences')}>
+            <Ionicons name="settings-outline" size={24} color="#000000" />
+            <Text style={styles.menuItemText}>Settings</Text>
+            <Ionicons name="chevron-forward" size={24} color="#000000" style={styles.menuItemArrow} />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.menuItem}>
+            <Ionicons name="help-circle-outline" size={24} color="#000000" />
+            <Text style={styles.menuItemText}>Help & Support</Text>
+            <Ionicons name="chevron-forward" size={24} color="#000000" style={styles.menuItemArrow} />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.menuItem}>
+            <Ionicons name="log-out-outline" size={24} color="#000000" />
+            <Text style={styles.menuItemText}>Log Out</Text>
+            <Ionicons name="chevron-forward" size={24} color="#000000" style={styles.menuItemArrow} />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -127,6 +149,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  contentContainer: {
+    paddingBottom: 100,
   },
   header: {
     padding: 20,
@@ -224,5 +252,24 @@ const styles = StyleSheet.create({
   historyTime: {
     fontSize: 14,
     color: '#666',
+  },
+  menuSection: {
+    padding: 20,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  menuItemText: {
+    fontSize: 16,
+    color: '#000000',
+    marginLeft: 16,
+    flex: 1,
+  },
+  menuItemArrow: {
+    opacity: 0.3,
   },
 });

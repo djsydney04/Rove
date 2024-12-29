@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Activity } from '../types';
 
@@ -68,56 +68,69 @@ export default function MyActivities() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>My Activities</Text>
-      
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>This weekend</Text>
-        {mockActivities.thisWeekend.map((activity) => (
-          <ActivityItem 
-            key={activity.id} 
-            activity={activity} 
-            onPress={() => {}}
-          />
-        ))}
-      </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentContainer}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>My Activities</Text>
+        </View>
+        
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>This weekend</Text>
+          {mockActivities.thisWeekend.map((activity) => (
+            <ActivityItem 
+              key={activity.id} 
+              activity={activity} 
+              onPress={() => {}}
+            />
+          ))}
+        </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Next Week</Text>
-        {mockActivities.nextWeek.map((activity) => (
-          <ActivityItem 
-            key={activity.id} 
-            activity={activity} 
-            onPress={() => {}}
-          />
-        ))}
-      </View>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Next Week</Text>
+          {mockActivities.nextWeek.map((activity) => (
+            <ActivityItem 
+              key={activity.id} 
+              activity={activity} 
+              onPress={() => {}}
+            />
+          ))}
+        </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Next Weekend</Text>
-        {mockActivities.nextWeekend.map((activity) => (
-          <ActivityItem 
-            key={activity.id} 
-            activity={activity} 
-            onPress={() => {}}
-          />
-        ))}
-      </View>
-    </ScrollView>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Next Weekend</Text>
+          {mockActivities.nextWeekend.map((activity) => (
+            <ActivityItem 
+              key={activity.id} 
+              activity={activity} 
+              onPress={() => {}}
+            />
+          ))}
+        </View>
+        
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    padding: 20,
+    backgroundColor: '#FFFFFF',
   },
-  title: {
+  scrollView: {
+    flex: 1,
+  },
+  contentContainer: {
+    paddingBottom: 100, // Add padding for bottom tab bar
+  },
+  header: {
+    padding: 20,
+    paddingTop: 60,
+  },
+  headerTitle: {
     fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 24,
-    color: '#333',
+    fontWeight: '600',
+    color: '#000000',
   },
   section: {
     marginBottom: 24,

@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -78,11 +79,8 @@ const CreateActivityForm = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
-    >
-      <ScrollView style={styles.scrollView}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentContainer}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Create Activity</Text>
         </View>
@@ -195,7 +193,7 @@ const CreateActivityForm = ({ navigation }) => {
           </TouchableOpacity>
         </Animated.View>
       </View>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
@@ -455,5 +453,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#FFFFFF',
+  },
+  contentContainer: {
+    paddingVertical: 20,
   },
 });
