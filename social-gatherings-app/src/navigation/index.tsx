@@ -1,5 +1,5 @@
-import React from 'react';
-import { TouchableOpacity, StatusBar } from 'react-native';
+import React, { useState } from 'react';
+import { TouchableOpacity, StatusBar, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -12,74 +12,54 @@ import Profile from '../screens/Profile';
 import Preferences from '../screens/Preferences';
 import SplashScreen from '../screens/SplashScreen';
 import CustomTabBar from '../components/CustomTabBar';
+import ActivityDetails from '../screens/ActivityDetails';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function MainTabs() {
+function TabNavigator() {
   return (
     <Tab.Navigator
       tabBar={props => <CustomTabBar {...props} />}
-      screenOptions={({ route, navigation }) => ({
-        headerStyle: {
-          elevation: 0,
-          shadowOpacity: 0,
-          borderBottomWidth: 0,
-          backgroundColor: '#000000',
-        },
-        headerTitleStyle: {
-          fontWeight: '600',
-          fontSize: 17,
-          color: '#FFFFFF',
-        },
-        headerTintColor: '#FFFFFF',
-        tabBarShowLabel: false,
-        // Add header options for Discover screen
-        ...(route.name === 'Discover' && {
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Preferences')}
-              style={{ marginLeft: 16 }}
-            >
-              <Ionicons name="settings-outline" size={24} color="#FFFFFF" />
-            </TouchableOpacity>
-          ),
-          headerRight: () => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Profile')}
-              style={{ marginRight: 16 }}
-            >
-              <Ionicons name="person-outline" size={24} color="#FFFFFF" />
-            </TouchableOpacity>
-          ),
-        }),
-      })}
+      screenOptions={{
+        headerShown: false,
+      }}
     >
       <Tab.Screen 
-        name="My Activities" 
+        name="MyActivities" 
         component={MyActivities}
         options={{
-          headerTitle: 'My Activities',
-          headerTitleStyle: {
-            fontSize: 24,
-            fontWeight: '700',
-            color: '#FFFFFF',
-          }
+          title: 'My Activities',
         }}
       />
       <Tab.Screen 
-        name="Discover" 
+        name="ActivityDiscovery" 
         component={ActivityDiscovery}
         options={{
-          headerShown: false
+          title: 'Discover',
         }}
       />
       <Tab.Screen 
-        name="Create" 
+        name="CreateActivity" 
         component={CreateActivity}
         options={{
-          headerTitle: 'Create Activity',
-          presentation: 'modal'
+          title: 'Create',
+        }}
+      />
+      <Tab.Screen 
+        name="Profile" 
+        component={Profile}
+        options={{
+          tabBarButton: () => null,
+          tabBarVisible: false,
+        }}
+      />
+      <Tab.Screen 
+        name="Preferences" 
+        component={Preferences}
+        options={{
+          tabBarButton: () => null,
+          tabBarVisible: false,
         }}
       />
     </Tab.Navigator>
@@ -96,11 +76,22 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <StatusBar barStyle="light-content" />
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="MainTabs" component={MainTabs} />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="Preferences" component={Preferences} />
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          presentation: 'card',
+          animation: 'slide_from_right',
+        }}
+      >
+        <Stack.Screen name="Root" component={TabNavigator} />
+        <Stack.Screen 
+          name="ActivityDetails" 
+          component={ActivityDetails}
+          options={{
+            presentation: 'modal',
+            animation: 'slide_from_bottom',
+          }}
+        />
       </Stack.Navigator>
       <View style={{ height: 10, backgroundColor: '#000000', position: 'absolute', bottom: 0, left: 0, right: 0 }} />
     </NavigationContainer>

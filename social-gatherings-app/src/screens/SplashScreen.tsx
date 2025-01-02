@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Animated, Dimensions } from 'react-native';
+import { View, StyleSheet, Animated, Dimensions, Image } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import BranchLogo from '../../assets/BranchLogo.svg';
 
 const { width, height } = Dimensions.get('window');
@@ -17,9 +18,10 @@ type SplashScreenNavigationProp = NativeStackNavigationProp<
 
 type Props = {
   navigation: SplashScreenNavigationProp;
+  onFinish: () => void;
 };
 
-export default function SplashScreen({ navigation }: Props) {
+export default function SplashScreen({ navigation, onFinish }: Props) {
   const fadeAnim = new Animated.Value(0);
   const scaleAnim = new Animated.Value(0.8);
 
@@ -41,11 +43,11 @@ export default function SplashScreen({ navigation }: Props) {
 
     // Navigate to main screen after delay
     const timer = setTimeout(() => {
-      navigation.replace('MainTabs');
+      onFinish();
     }, 2500);
 
     return () => clearTimeout(timer);
-  }, [navigation]);
+  }, [navigation, onFinish]);
 
   return (
     <View style={styles.container}>
@@ -67,7 +69,7 @@ export default function SplashScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'center',
   },
